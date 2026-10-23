@@ -1,0 +1,13 @@
+[project]
+name = "agent-skillset"
+version = "0.0.0"
+description = "A collection of agent skills"
+requires-python = ">=3.10"
+
+[project.optional-dependencies]
+dev = ["pytest>=8"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+pythonpath = ["tests"]
+addopts = "-ra"
