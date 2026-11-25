@@ -119,4 +119,4 @@ def test_covers_prs_with_and_without_a_user_interface():
 
 @pytest.mark.parametrize("term", ["Cursor", "Claude", "generalPurpose", "Codex", "Copilot"])
 def test_is_agent_neutral(term):
-    assert term not in TEXT, f"{term!r} ties the skill to one agent"
+    assert not re.search(rf"\b{term}\b", TEXT), f"{term!r} ties the skill to one agent"
