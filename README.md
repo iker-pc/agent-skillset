@@ -7,6 +7,8 @@ A collection of agent skills I build and maintain. Each skill lives under `skill
 | Skill | What it does |
 |---|---|
 | [`stacked-pr-sync`](skills/stacked-pr-sync/) | Syncs a GitHub stacked PR (`main → PR1 → PR2 → PR3`). Detects changes in the base branch that are missing from the first PR, merges them in and propagates the merge up the whole stack using merges only (never rebase or force-push). Stops to ask on ambiguous conflicts and ends with a visual report. |
+| [`review-pull-request`](skills/review-pull-request/) | Walks a GitHub PR with a human reviewer: a review subagent on the model you choose writes a plain-language description, a test plan and findings; you accept, edit or discard each comment, which is saved as a pending review; then it guides manual testing (in the app when the PR has a user interface, technical checks when it does not) and publishes only after you choose comment, request changes or approve. |
+| [`address-pull-request-comments`](skills/address-pull-request-comments/) | The author side of a review: walks the unresolved comments on your own GitHub PR one at a time. A subagent on the model you choose judges each one (question, change, decline or already settled) and explains it in plain language; code is edited only after you confirm, with a suggested way to verify it (in the app when the change has a user interface, a technical check when it does not). Replies are saved on a pending review and published, and their threads resolved, only after you confirm. Requires `gh` and `jq`. |
 
 ## Installing a skill
 
