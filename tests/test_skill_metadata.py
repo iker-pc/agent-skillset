@@ -4,6 +4,7 @@ import re
 from pathlib import Path
 
 import pytest
+import yaml
 
 from conftest import SKILLS_DIR
 
@@ -12,13 +13,12 @@ FRONT_MATTER = re.compile(r"\A---\n(.*?)\n---\n", re.DOTALL)
 
 
 def parse_front_matter(text: str) -> dict:
+    """Parses the front matter as real YAML, so multi-line values such as
+    `description: >-` are read in full instead of as the literal `>-`."""
     match = FRONT_MATTER.match(text)
     assert match, "SKILL.md must start with a YAML front matter block (--- ... ---)"
-    fields = {}
-    for line in match.group(1).splitlines():
-        if ":" in line:
-            key, value = line.split(":", 1)
-            fields[key.strip()] = value.strip()
+    fields = yaml.safe_load(match.group(1))
+    assert isinstance(fields, dict), "front matter must be a YAML mapping"
     return fields
 
 
@@ -35,7 +35,10 @@ def test_skill_has_valid_skill_md(skill_dir: Path):
     assert fields.get("name") == skill_dir.name, (
         f"front matter name {fields.get('name')!r} != folder {skill_dir.name!r}"
     )
-    assert fields.get("description"), "front matter has no description"
+    description = fields.get("description")
+    assert isinstance(description, str) and description.strip(), (
+        "front matter has no description"
+    )
 
 
 @pytest.mark.parametrize("skill_dir", SKILL_DIRS, ids=lambda p: p.name)
